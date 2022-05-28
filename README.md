@@ -1,11 +1,9 @@
 # NoSkid ~ By Lore<3
 
-### gg ip grabber links <3.
-
 ### Simple python project to flood ip grabber links with proxies.
 
 ![Screenshot](Screenshot.png)
-
+### gg ip grabber links <3.
 
 ## ℹ️Features:
 * Downloads a list of proxies for you
