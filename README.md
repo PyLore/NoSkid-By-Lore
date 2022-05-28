@@ -6,8 +6,7 @@
 ### gg ip grabber links <3.
 
 ## ℹ️Features:
-* Downloads a list of proxies for you
-* Floods IP grabber links with proxies.
+* Downloads a list of proxies
 
 ## 🔌 How To Install:
 ```bash
