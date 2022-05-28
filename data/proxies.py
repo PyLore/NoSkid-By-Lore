@@ -9,14 +9,17 @@ proxy_urls = [
 
 def DOWNLOAD(): 
     proxy_file = open('data/proxies.txt', 'w')
+    proxies    = []
     while True:
         try:
             for url in proxy_urls:
                 scrape = requests.get(url).text.replace('\n', '')
-                proxy_file.write(scrape)
-                proxy_file.close()
+                proxies.append(scrape)
+            for proxy in proxies:
+                proxy_file.write(proxy)
+            proxy_file.close()
         except:
-            print(f'{C.red}• {C.white} Error occured while attempting to download proxies.')
+            print(f'{C.red}• {C.white}Error occured while attempting to download proxies.')
             pass
         print(f'{C.lime}• {C.white}Downloaded proxies.')
         break    
