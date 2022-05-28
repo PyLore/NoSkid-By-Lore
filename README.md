@@ -2,10 +2,10 @@
 
 ### gg ip grabber links <3.
 
+### Simple python project to flood ip grabber links with proxies.
+
 ![Screenshot](Screenshot.png)
 
-###
-Simple python project to flood ip grabber links with proxies.
 
 ## ℹ️Features:
 * Downloads a list of proxies for you
