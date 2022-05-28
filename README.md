@@ -4,6 +4,9 @@
 
 ![Screenshot](Screenshot.png)
 
+###
+Simple python project to flood ip grabber links with proxies.
+
 ## ℹ️Features:
 * Downloads a list of proxies for you
 * Floods IP grabber links with proxies.
